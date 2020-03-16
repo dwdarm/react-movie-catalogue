@@ -1,0 +1,51 @@
+.movie-preview-container {
+  padding: 0;
+  position: relative;
+  background-color: gray;
+}
+
+.movie-preview-cover {
+  background-image: url('https://upload.wikimedia.org/wikipedia/en/4/4d/The_Informer_poster_2020.jpg');
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.movie-preview-overlay {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.movie-preview-rating {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.25rem 0.5rem;
+  color: white;
+  font-size: 1rem;
+  background-color: black;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.movie-preview-title {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding: 0rem 1rem;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  z-index: 2;
+}
