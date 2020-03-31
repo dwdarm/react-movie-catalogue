@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from "react-helmet";
 import { useLocation, useHistory } from 'react-router-dom';
 import { getUpcomingMovies } from '../store/actions/movies.action';
 import movies from '../components/Movies';
@@ -12,6 +13,9 @@ export default () => {
 
   return (
     <div className="section">
+      <Helmet>
+        <title>Upcoming Movies</title>
+      </Helmet>
       <div className="container">
 
         <h1 className="title is-4">Upcoming Movies</h1>

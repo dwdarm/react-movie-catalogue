@@ -4,7 +4,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { getGenres } from '../store/actions/genres.action';
 
 const NavBar = ({genres, path, onSearch}) => (
-  <nav className="navbar is-dark is-fixed-top">
+  <nav className="navbar is-dark">
     <div className="container">
 
       <div className="navbar-brand">
@@ -31,7 +31,7 @@ const NavBar = ({genres, path, onSearch}) => (
       </div>
 
       <div id="navbar-menu-target" className="navbar-menu">
-        <div className="navbar-start">
+        <div className="navbar-end">
 
           <Link 
             className={`navbar-item ${path === '/popular' ? 'is-active' : ''}`}

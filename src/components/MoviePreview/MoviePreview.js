@@ -18,7 +18,7 @@ export default props => (
     </div>
 
     <div className="movie-preview-overlay"></div>
-
+    <div className="movie-preview-overlay-top"></div>
 
   </div>
 );

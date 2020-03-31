@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from "react-helmet";
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { getMovie } from '../store/actions/movies.action'
@@ -19,6 +20,9 @@ const Movie = props => {
   if (error.isError && !movie) {
     return (
       <div className="section">
+        <Helmet>
+          <title>Error</title>
+        </Helmet>
         <div className="container">
           <p className="has-text-centered">{error.message}</p>
         </div>
@@ -29,6 +33,9 @@ const Movie = props => {
   if (!movie) { 
     return (
       <div className="section">
+        <Helmet>
+          <title>Loading...</title>
+        </Helmet>
         <div className="container">
           <p className="has-text-centered">Loading...</p>
         </div>
@@ -38,6 +45,9 @@ const Movie = props => {
 
   return (
     <div className="section">
+      <Helmet>
+        <title>{movie.title}</title>
+      </Helmet>
       <div className="container">
         <div className="columns">
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from "react-helmet";
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { searchMovies } from '../store/actions/search.action';
 import movies from '../components/Movies';
@@ -13,6 +14,9 @@ export default () => {
 
   return (
     <div className="section">
+      <Helmet>
+        <title>Search for {keyword}</title>
+      </Helmet>
       <div className="container">
 
         <h1 className="title is-4">{`Search result for "${keyword}"`}</h1>
