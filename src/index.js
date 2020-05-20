@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bulma/css/bulma.min.css';
+import './styles/index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

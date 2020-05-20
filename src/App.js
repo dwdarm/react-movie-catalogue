@@ -4,9 +4,6 @@ import { Provider } from 'react-redux';
 import configureStore from './store';
 import Layout from './components/Layout';
 import Index from './pages/Index';
-import Popular from './pages/Popular';
-import Upcoming from './pages/Upcoming';
-import Toprated from './pages/Toprated';
 import Genres from './pages/Genres';
 import Search from './pages/Search';
 import Movie from './pages/Movie';
@@ -18,18 +15,15 @@ function App() {
     <div>
       <Provider store={store}>
       <BrowserRouter>
-        <Layout>
-          <Switch>
-            <Route path="/movie/:id"><Movie/></Route>
-            <Route path="/search/:keyword"><Search/></Route>
-            <Route path="/genre/:genre/:genreId"><Genres/></Route>
-            <Route path="/toprated"><Toprated/></Route>
-            <Route path="/upcoming"><Upcoming/></Route>
-            <Route path="/popular"><Popular/></Route>
-            <Route path="/:page"><Index/></Route>
-            <Route path="/"><Index/></Route>
-          </Switch>
-        </Layout>
+        <Switch>
+          <Route path="/movie/:id"><Layout><Movie/></Layout></Route>
+          <Route path="/search/:keyword"><Layout><Search/></Layout></Route>
+          <Route path="/genre/:genre/:genreId"><Layout><Genres/></Layout></Route>
+          <Route path="/toprated"><Layout><Index title="Top Rated Movies" section="topRated"/></Layout></Route>
+          <Route path="/upcoming"><Layout><Index title="Upcoming Movies" section="upcoming"/></Layout></Route>
+          <Route path="/popular"><Layout><Index title="Popular Movies" section="popular"/></Layout></Route>
+          <Route path="/"><Layout><Index title="In Theatres" section="nowPlaying"/></Layout></Route>
+        </Switch>
       </BrowserRouter>
       </Provider>
     </div>

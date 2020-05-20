@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactComponent as Logo } from '../themoviedb-logo.svg';
+import { ReactComponent as Logo } from '../images//themoviedb-logo.svg';
 
 export default () => (
   <footer className="footer" style={{padding: '1.5rem'}}>

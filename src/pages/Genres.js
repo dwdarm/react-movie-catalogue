@@ -1,8 +1,7 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 import { useParams, useHistory, useLocation } from 'react-router-dom';
-import { getMoviesByGenre } from '../store/actions/movies.action';
-import movies from '../components/Movies';
+import MoviesGenre from '../components/MoviesGenre';
 
 export default () => {
   const history = useHistory();
@@ -11,7 +10,6 @@ export default () => {
   const { genre, genreId } = params;
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get('page')) || 1;
-  const Movies = movies(genre);
 
   return (
     <div className="section">
@@ -19,18 +17,14 @@ export default () => {
         <title>{genre} Movies</title>
       </Helmet>
       <div className="container">
-
         <h1 className="title is-4">{`${genre} Movies`}</h1>
-
-        <Movies 
+        <MoviesGenre 
           page={page} 
           genre={genre}
           genreId={genreId}
           history={history} 
-          location={location}
-          onLoadMovies={getMoviesByGenre} 
+          location={location} 
         />
-
       </div>
     </div>
   );

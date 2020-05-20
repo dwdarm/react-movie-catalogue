@@ -1,8 +1,7 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { searchMovies } from '../store/actions/search.action';
-import movies from '../components/Movies';
+import MoviesSearch from '../components/MoviesSearch';
 
 export default () => {
   const history = useHistory();
@@ -10,7 +9,6 @@ export default () => {
   const { keyword } = useParams();
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get('page')) || 1;
-  const Movies = movies('nowPlaying');
 
   return (
     <div className="section">
@@ -18,17 +16,8 @@ export default () => {
         <title>Search for {keyword}</title>
       </Helmet>
       <div className="container">
-
         <h1 className="title is-4">{`Search result for "${keyword}"`}</h1>
-
-        <Movies 
-          page={page} 
-          history={history} 
-          location={location}
-          keyword={keyword}
-          onLoadMovies={searchMovies} 
-        />
-
+        <MoviesSearch page={page} history={history} location={location} keyword={keyword} />
       </div>
     </div>
   );

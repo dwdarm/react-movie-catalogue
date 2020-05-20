@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
-import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux'
-import { getMovie } from '../store/actions/movies.action'
+import { useParams, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getMovieDetail } from '../store/actions/movies.action';
+import RatingStars from '../components/RatingStars';
+import MoviesSimiliar from '../components/MoviesSimiliar';
 
 const Movie = props => {
   const [ loading, setLoading ] = useState(false);
@@ -13,7 +15,9 @@ const Movie = props => {
   useEffect(() => {
     if (!movie && !loading) {
       setLoading(true);
-      props.dispatch(getMovie(id));
+      props.dispatch(getMovieDetail(id)).then(data => {
+       if (data) { setLoading(false); }
+      });
     }
   });
 
@@ -44,84 +48,78 @@ const Movie = props => {
   }
 
   return (
-    <div className="section">
+    <>
+    <section className="hero">
       <Helmet>
         <title>{movie.title}</title>
       </Helmet>
-      <div className="container">
-        <div className="columns">
-
-          <div className="column is-4">
-            <figure className="image">
-              <img src={`https://image.tmdb.org/t/p/w400/${movie.poster_path}`} />
-            </figure>
+      <div className="hero-body">
+        <div className="container">
+          <div className="columns">
+          
+            <div className="column is-narrow">
+              <figure 
+                className="image"
+                style={{borderRadius:'5px'}}>
+                <img 
+                  style={{width:'300px', borderRadius:'5px', margin:'0 auto'}}
+                  src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
+                  alt={movie.title}/>
+              </figure>
+            </div>
+            
+            <div className="column">
+            
+              <h1 className="title">{movie.title}</h1>
+              <h2 className="subtitle">{movie.tagline}</h2>
+              
+              <div className="columns">
+                <div className="column">
+                  <div className="columns is-mobile">
+                    <div className="column is-narrow">
+                      <RatingStars rating={Math.round(movie.vote_average/2)}/>
+                    </div>
+                    <div className="column is-narrow">
+                      <p className="has-text-weight-semibold">{movie.vote_average}/10</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="column is-narrow">
+                  <p className="has-text-grey has-text-weight-semibold">{`${movie.runtime} min | ${movie.spoken_languages[0].name} | ${movie.release_date}`}</p>
+                </div>
+              </div>
+              
+              <p className="title is-5 is-spaced" style={{marginTop:'3rem'}}>Synopsis</p>
+              <p className="subtitle is-6">{movie.overview}</p>
+              
+              <p className="title is-5 is-spaced" style={{marginTop:'3rem'}}>Genres</p>
+              <div className="tags genres-tags">
+                {movie.genres.map(e => (
+                  <Link 
+                    key={e.id}
+                    className="tag is-dark" 
+                    to={`/${'genre/' + e.name + '/' + e.id}`}>
+                    {e.name}
+                  </Link>
+                ))}
+              </div>
+              
+            </div>
+            
           </div>
-
-          <div className="column">
-            <h1 className="title">{movie.title}</h1>
-            <p className="subtitle">{movie.overview}</p><br/>
-            <h3 className="title is-5">Details</h3>
-            <table className="table is-narrow">
-              <tbody>
-
-                <tr>
-                  <th>Rating</th>
-                  <td>{movie.vote_average}</td>
-                </tr>
-
-                <tr>
-                  <th>Tagline</th>
-                  <td>{movie.tagline}</td>
-                </tr>
-
-                <tr>
-                  <th>Release Date</th>
-                  <td>{movie.release_date}</td>
-                </tr>
-
-                <tr>
-                  <th>Runtime</th>
-                  <td>{movie.runtime + ' min'}</td>
-                </tr>
-
-                <tr>
-                  <th>Language</th>
-                  <td>{movie.spoken_languages.map(e => e.name).join(' | ')}</td>
-                </tr>
-
-                <tr>
-                  <th>Genres</th>
-                  <td>{movie.genres.map(e => e.name).join(' | ')}</td>
-                </tr>
-
-                <tr>
-                  <th>Country</th>
-                  <td>{movie.production_countries.map(e => e.name).join(' | ')}</td>
-                </tr>
-
-                <tr>
-                  <th>Cast</th>
-                  <td>{movie.cast.map(e => e.name).join(' | ')}</td>
-                </tr>
-
-                <tr>
-                  <th>Production Companies</th>
-                  <td>{movie.production_companies.map(e => e.name).join(' | ')}</td>
-                </tr>
-
-                <tr>
-                  <th>Crew</th>
-                  <td>{movie.crew.map(e => e.name).join(' | ')}</td>
-                </tr>
-                  
-              </tbody>
-            </table>
-           
-          </div>
-
+        
         </div>
       </div>
+    </section>
+    
+    <div className="section">
+      <div className="container">
+        <h2 className="title is-4 is-size-5-mobile">Similiar Movies</h2>
+        <MoviesSimiliar id={id}/>
+      </div>
     </div>
+    
+    </>
   );
 }
 

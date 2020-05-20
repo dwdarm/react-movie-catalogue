@@ -1,32 +1,22 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 import { useHistory, useLocation } from 'react-router-dom';
-import { getNowPlayingMovies } from '../store/actions/movies.action';
-import movies from '../components/Movies';
+import Movies from '../components/MoviesSection';
 
-export default () => {
+export default ({ title, section }) => {
   const history = useHistory();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get('page')) || 1;
-  const Movies = movies('nowPlaying');
 
   return (
     <div className="section">
       <Helmet>
-        <title>Movies Catalogue</title>
+        <title>{title || 'Movies'} - Movie Catalogue</title>
       </Helmet>
       <div className="container">
-
-        <h1 className="title is-4">In Theatres</h1>
-
-        <Movies 
-          page={page} 
-          history={history} 
-          location={location}
-          onLoadMovies={getNowPlayingMovies} 
-        />
-
+        <h1 className="title is-size-5-mobile">{title || 'Movies'}</h1>
+        <Movies section={section} page={page} history={history} location={location} />
       </div>
     </div>
   );

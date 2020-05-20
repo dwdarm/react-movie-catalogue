@@ -1,0 +1,10 @@
+.movie-preview {
+  transition: transform 0.5s;
+}
+
+.movie-preview:hover {
+  background-color: hsl(0, 0%, 86%);
+  -webkit-transform: scale(1.05, 1.05);
+  -ms-transform: scale(1.05, 1.05);
+  transform: scale(1.05, 1.05);
+}

@@ -16,6 +16,13 @@ const movie = {
       queryParams: { ...params, api_key: API_KEY }
     }));
   },
+  
+  similiar(id, params = {}) {
+    return fetch(buildUrl(BASE_URL, {
+      path: `movie/${id}/similar`,
+      queryParams: { ...params, api_key: API_KEY }
+    }));
+  },
 
   nowPlaying(params = {}) {
     return fetch(buildUrl(BASE_URL, {
