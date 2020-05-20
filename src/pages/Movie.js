@@ -85,7 +85,7 @@ const Movie = props => {
                   </div>
                 </div>
                 <div className="column is-narrow">
-                  <p className="has-text-grey has-text-weight-semibold">{`${movie.runtime} min | ${movie.spoken_languages[0].name} | ${movie.release_date}`}</p>
+                  <p className="has-text-grey">{`${movie.runtime} min | ${movie.spoken_languages.map(e => e.name).join(' ')} | ${movie.release_date}`}</p>
                 </div>
               </div>
               
