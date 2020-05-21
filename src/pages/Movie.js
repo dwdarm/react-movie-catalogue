@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { useParams, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMovieDetail } from '../store/actions/movies.action';
+import Layout from '../components/Layout';
 import RatingStars from '../components/RatingStars';
 import MoviesSimiliar from '../components/MoviesSimiliar';
 
@@ -23,6 +24,7 @@ const Movie = props => {
 
   if (error.isError && !movie) {
     return (
+      <Layout>
       <div className="section">
         <Helmet>
           <title>Error</title>
@@ -31,11 +33,13 @@ const Movie = props => {
           <p className="has-text-centered">{error.message}</p>
         </div>
       </div>
+      </Layout>
     );
   }
 
   if (!movie) { 
     return (
+      <Layout>
       <div className="section">
         <Helmet>
           <title>Loading...</title>
@@ -44,11 +48,12 @@ const Movie = props => {
           <p className="has-text-centered">Loading...</p>
         </div>
       </div>
+      </Layout>
     );
   }
 
   return (
-    <>
+    <Layout>
     <section className="hero">
       <Helmet>
         <title>{movie.title}</title>
@@ -119,7 +124,7 @@ const Movie = props => {
       </div>
     </div>
     
-    </>
+    </Layout>
   );
 }
 

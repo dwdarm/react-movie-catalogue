@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { getGenres } from '../store/actions/genres.action';
 
-const NavBar = ({genres, path, onSearchInputChange, onSearchButtonClick}) => (
+const NavBar = ({genres, path, active, onBurgerClick, onSearchInputChange, onSearchButtonClick}) => (
   <nav className="navbar is-link">
     <div className="container">
 
@@ -18,12 +18,8 @@ const NavBar = ({genres, path, onSearchInputChange, onSearchButtonClick}) => (
 
         <a 
           role="button" 
-          id="navbar-trigger"
-          className="navbar-burger burger" 
-          onClick={e => {
-            document.getElementById('navbar-trigger').classList.toggle('is-active');
-            document.getElementById('navbar-menu-target').classList.toggle('is-active');
-          }}>
+          className={`navbar-burger burger ${active ? 'is-active' : ''}`}
+          onClick={onBurgerClick}>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -31,7 +27,7 @@ const NavBar = ({genres, path, onSearchInputChange, onSearchButtonClick}) => (
 
       </div>
 
-      <div id="navbar-menu-target" className="navbar-menu">
+      <div className={`navbar-menu ${active ? 'is-active' : ''}`}>
 
         <div className="navbar-start">
           <div className="navbar-item">
@@ -101,13 +97,22 @@ const NavBar = ({genres, path, onSearchInputChange, onSearchButtonClick}) => (
 );
 
 const NavBarContainer = ({genres, dispatch}) => {
-  const [search, setSearch] = useState('');
   const history = useHistory();
   const location = useLocation();
+  const [lastPath, setLastPath] = useState(location.pathname);
+  const [active, setActive] = useState('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (genres.length === 0) {
       dispatch(getGenres());
+    }
+  });
+  
+  useEffect(() => {
+    if (location.pathname !== lastPath) {
+      setLastPath(location.pathname);
+      setActive(false)
     }
   });
 
@@ -115,6 +120,8 @@ const NavBarContainer = ({genres, dispatch}) => {
     <NavBar 
       genres={genres} 
       path={location.pathname}
+      active={active}
+      onBurgerClick={() => setActive(!active)}
       onSearchInputChange={e => setSearch(e.target.value)}
       onSearchButtonClick={() => {
         if (search.length > 0) {
