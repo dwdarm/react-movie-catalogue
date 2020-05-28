@@ -34,6 +34,12 @@ const receiveMovies = (section, data) => ({
   }
 });
 
+// INVALIDATE MOVIES
+const invalidateMovies = (section) => ({
+  type: 'INVALIDATE_MOVIES',
+  payload: { section }
+});
+
 // REQUEST SIMILIAR MOVIES
 const requestSimiliarMovies = (id) => ({
   type: 'REQUEST_SIMILIAR_MOVIES',
@@ -51,6 +57,7 @@ const receiveSimiliarMovies = (id, data) => ({
   }
 });
 
+// ADD MOVIE DETAIL
 const addMovieDetail = (id, data) => ({
   type: 'ADD_MOVIE_DETAIL',
   payload: { id, movie: data }
@@ -104,6 +111,7 @@ export const fetchMovies = (section, params = {}) => (dispatch, getState) => {
     return Promise.resolve();
   }
 
+  dispatch(invalidateMovies(section));
   dispatch(requestMovies(section, params.page));
 
   return movieApi[section](params)
@@ -125,6 +133,7 @@ export const fetchMoviesByGenre = ({genreId, genre, page}) => (dispatch, getStat
     return Promise.resolve();
   }
 
+  dispatch(invalidateMovies(genre));
   dispatch(requestMovies(genre, page));
 
   return discoverApi({ with_genres: genreId, page })

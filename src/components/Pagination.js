@@ -26,6 +26,8 @@ const computePagination = (page, pages) => {
 }
 
 const Pagination = ({page, pages, onClick}) => (
+  <>
+  {pages > 1 ?
   <nav className="pagination is-centered" role="navigation">
 
     {page > 1 ? 
@@ -75,7 +77,9 @@ const Pagination = ({page, pages, onClick}) => (
 
     </ul>
 
-  </nav>
+  </nav> : null
+  }
+  </>
 );
 
 export default Pagination;

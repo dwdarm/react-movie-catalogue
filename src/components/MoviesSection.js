@@ -9,9 +9,9 @@ const Movies = props => {
 
   useEffect(() => { dispatch(fetchMovies(section, { page })); });
 
-  if (isFetching) {
-    return <p className="has-text-centered">Loading...</p>
-  }
+  //if (isFetching) {
+  //  return <p className="has-text-centered">Loading...</p>
+  //}
 
   return (
     <>

@@ -23,6 +23,15 @@ export default (state = {
         isFetching: false,
         hasMore: payload.movies.length > 0
       }
+    case 'INVALIDATE_SEARCH':
+      return {
+        keyword: payload.keyword,
+        movies: [],
+        page: 1,
+        pages: 1,
+        isFetching: false,
+        hasMore: true
+      }
     default: 
       return state;
   }

@@ -5,12 +5,12 @@ import Pagination from './Pagination';
 import { fetchSimiliarMovies } from '../store/actions/movies.action';
 
 const Movies = props => {
-  const { id, movies, history, location, isFetching, dispatch } = props;
+  const { id, movies, hasMore, history, location, isFetching, dispatch } = props;
 
   useEffect(() => { dispatch(fetchSimiliarMovies(id)); });
-
-  if (isFetching) {
-    return <p className="has-text-centered">Loading...</p>
+  
+  if (movies.length === 0 && !hasMore) {
+    return null;
   }
 
   return <MovieList data={movies}/>
@@ -19,7 +19,7 @@ const Movies = props => {
 const mapStateToProps = ({ movieDetail }, { id }) => {
   return { 
     movies: movieDetail[id].similiar.movies, 
-    isFetching: movieDetail[id].similiar.isFetching 
+    hasMore: movieDetail[id].similiar.hasMore 
   }
 }
 

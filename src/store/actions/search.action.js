@@ -15,6 +15,11 @@ const receiveSearch = (data) => ({
   }
 });
 
+const invalidateSearch = (keyword = '') => ({
+  type: 'INVALIDATE_SEARCH',
+  payload: { keyword }
+});
+
 const shouldFetchSearch = (state, keyword, page) => {
   const { search } = state; 
   
@@ -40,6 +45,7 @@ export const fetchSearch = (keyword, params = {}) => (dispatch, getState) => {
     return Promise.resolve();
   }
 
+  dispatch(invalidateSearch(keyword));
   dispatch(requestSearch(keyword, params.page));
 
   return searchApi({ query: keyword, ...params })

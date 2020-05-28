@@ -16,6 +16,14 @@ const movies = (state = {
         isFetching: false,
         hasMore: payload.movies.length > 0
       }
+    case 'INVALIDATE_MOVIES':
+      return {
+        movies: [],
+        page: 1,
+        pages: 1,
+        isFetching: false,
+        hasMore: true
+      }
     default: 
       return state;
   }
@@ -25,6 +33,7 @@ const moviesBySection = (state = {}, action) => {
   switch(action.type) {
     case 'REQUEST_MOVIES':
     case 'RECEIVE_MOVIES':
+    case 'INVALIDATE_MOVIES':
       return {
         ...state,
         [action.payload.section]: movies(state[action.payload.section], action)

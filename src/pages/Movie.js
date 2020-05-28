@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import { useParams, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Skeleton from 'react-loading-skeleton';
 import { getMovieDetail } from '../store/actions/movies.action';
 import Layout from '../components/Layout';
 import RatingStars from '../components/RatingStars';
@@ -37,6 +38,7 @@ const Movie = props => {
     );
   }
 
+  /*
   if (!movie) { 
     return (
       <Layout>
@@ -50,14 +52,15 @@ const Movie = props => {
       </div>
       </Layout>
     );
-  }
+  }*/
 
   return (
     <Layout>
+    <Helmet>
+      <title>{movie ? movie.title : 'Loading...'}</title>
+    </Helmet>
+    
     <section className="hero">
-      <Helmet>
-        <title>{movie.title}</title>
-      </Helmet>
       <div className="hero-body">
         <div className="container">
           <div className="columns">
@@ -66,48 +69,60 @@ const Movie = props => {
               <figure 
                 className="image"
                 style={{borderRadius:'5px'}}>
-                <img 
-                  style={{width:'300px', borderRadius:'5px', margin:'0 auto'}}
-                  src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-                  alt={movie.title}/>
-              </figure>
+                  {movie ?
+                    <img 
+                      style={{width:'300px', borderRadius:'5px', margin:'0 auto'}}
+                      src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
+                      alt=""/> :
+                    <Skeleton style={{margin:'0 auto'}} width={300} height={400} />
+                  }
+              </figure> 
             </div>
             
             <div className="column">
             
-              <h1 className="title">{movie.title}</h1>
-              <h2 className="subtitle">{movie.tagline}</h2>
+              <h1 className="title">{movie ? movie.title : <Skeleton/>}</h1>
+              <h2 className="subtitle">{movie ? movie.tagline : <Skeleton/>}</h2>
               
               <div className="columns">
                 <div className="column">
                   <div className="columns is-mobile">
                     <div className="column is-narrow">
-                      <RatingStars rating={Math.round(movie.vote_average/2)}/>
+                      {movie ? 
+                        <RatingStars rating={Math.round(movie.vote_average/2)}/> : 
+                        <p><Skeleton/></p>
+                      }
                     </div>
                     <div className="column is-narrow">
-                      <p className="has-text-weight-semibold">{movie.vote_average}/10</p>
+                      <p className="has-text-weight-semibold">{movie ? `${movie.vote_average}/10` : <Skeleton/>}</p>
                     </div>
                   </div>
                 </div>
                 <div className="column is-narrow">
-                  <p className="has-text-grey">{`${movie.runtime} min | ${movie.spoken_languages.map(e => e.name).join(' ')} | ${movie.release_date}`}</p>
+                  {movie ? 
+                    <p className="has-text-grey">{`${movie.runtime} min | ${movie.spoken_languages.map(e => e.name).join(' ')} | ${movie.release_date}`}</p> :
+                    <Skeleton/>
+                  }
                 </div>
               </div>
               
-              <p className="title is-5 is-spaced" style={{marginTop:'3rem'}}>Synopsis</p>
-              <p className="subtitle is-6">{movie.overview}</p>
+              <h3 className="title is-5 is-spaced" style={{marginTop:'3rem'}}>{movie ? 'Synopsis' : <Skeleton/>}</h3>
+              <p className="subtitle is-6">{movie ? movie.overview : <Skeleton count={5}/>}</p>
               
-              <p className="title is-5 is-spaced" style={{marginTop:'3rem'}}>Genres</p>
-              <div className="tags genres-tags">
-                {movie.genres.map(e => (
-                  <Link 
-                    key={e.id}
-                    className="tag is-dark" 
-                    to={`/${'genre/' + e.name + '/' + e.id}`}>
-                    {e.name}
-                  </Link>
-                ))}
-              </div>
+              <h3 className="title is-5 is-spaced" style={{marginTop:'3rem'}}>{movie ? 'Genres' : <Skeleton/>}</h3>
+              {movie ? 
+                <div className="tags genres-tags">
+                  {movie.genres.map(e => (
+                    <Link 
+                      key={e.id}
+                      className="tag is-dark" 
+                      to={`/${'genre/' + e.name + '/' + e.id}`}>
+                      {e.name}
+                    </Link>
+                  ))}
+                </div> :
+                <Skeleton/>
+              }
               
             </div>
             
@@ -117,12 +132,14 @@ const Movie = props => {
       </div>
     </section>
     
-    <div className="section">
-      <div className="container">
-        <h2 className="title is-4 is-size-5-mobile">Similiar Movies</h2>
-        <MoviesSimiliar id={id}/>
-      </div>
-    </div>
+    {movie ?
+      <div className="section">
+        <div className="container">
+          <h2 className="title is-4 is-size-5-mobile">Similiar Movies</h2>
+          <MoviesSimiliar id={id}/>
+        </div>
+      </div> : null
+    }
     
     </Layout>
   );
