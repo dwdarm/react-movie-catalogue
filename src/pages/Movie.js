@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import { useParams, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import Skeleton from 'react-loading-skeleton';
-import { getMovieDetail } from '../store/actions/movies.action';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchMovieDetail, selectMovieDetail } from '../features/movie-detail.slice';
 import Layout from '../components/Layout';
 import RatingStars from '../components/RatingStars';
 import MoviesSimiliar from '../components/MoviesSimiliar';
 
 const Movie = props => {
-  const [ loading, setLoading ] = useState(false);
   const { id } = useParams();
-  const movie = props.movies[id];
-  const { error } = props;
+  const movie = useSelector(selectMovieDetail(id));
+  const dispatch = useDispatch();
+  const [ loading, setLoading ] = useState(false);
+  const [ error, setError ] = useState(false);
 
   useEffect(() => {
     if (!movie && !loading) {
       setLoading(true);
-      props.dispatch(getMovieDetail(id)).then(data => {
-       if (data) { setLoading(false); }
-      });
+      dispatch(fetchMovieDetail(id))
+      .then(data => setLoading(false))
+      .catch(() => setError(true));
     }
-  });
+  }, [movie, loading, dispatch, id]);
 
-  if (error.isError && !movie) {
+  if (error) {
     return (
       <Layout>
       <div className="section">
@@ -31,28 +32,12 @@ const Movie = props => {
           <title>Error</title>
         </Helmet>
         <div className="container">
-          <p className="has-text-centered">{error.message}</p>
+          <p className="has-text-centered">Resource not found!</p>
         </div>
       </div>
       </Layout>
     );
   }
-
-  /*
-  if (!movie) { 
-    return (
-      <Layout>
-      <div className="section">
-        <Helmet>
-          <title>Loading...</title>
-        </Helmet>
-        <div className="container">
-          <p className="has-text-centered">Loading...</p>
-        </div>
-      </div>
-      </Layout>
-    );
-  }*/
 
   return (
     <Layout>
@@ -145,11 +130,4 @@ const Movie = props => {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    movies: state.movieDetail,
-    error: state.error
-  }
-}
-
-export default connect(mapStateToProps)(Movie);
+export default Movie;

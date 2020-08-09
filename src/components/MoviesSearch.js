@@ -1,23 +1,51 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import searchApi from '../api/search-movie';
 import MovieList from './MovieList';
 import Pagination from './Pagination';
-import { fetchSearch } from '../store/actions/search.action';
 
-const Movies = props => {
-  const { movies, keyword, page, pages, history, location, isFetching, dispatch } = props;
-
-  useEffect(() => { dispatch(fetchSearch(keyword, { page })); });
-
-  //if (isFetching) {
-  //  return <p className="has-text-centered">Loading...</p>
-  //}
+const Movies = ({ keyword, page, history, location }) => {
+  const [ items, setItems ] = useState([]);
+  const [ pages, setPages ] = useState(1);
+  const [ currentKeyword, setCurrentKeyword ] = useState(keyword);
+  const [ currentPage, setCurrentPage ] = useState(page);
+  
+  useEffect(() => { 
+    let clearItems = false;
+    
+    if (currentKeyword !== keyword) {
+      setCurrentKeyword(keyword);
+      clearItems = true;
+    }
+    
+    if (currentPage !== page) {
+      setCurrentPage(page);
+      clearItems = true;
+    }
+    
+    if (clearItems) {
+      setItems([]);
+    }
+    
+  }, [currentKeyword, keyword, currentPage, page]);
+  
+  useEffect(() => {
+    if (items.length === 0) {
+      fetchMovies();
+    }
+  });
+  
+  const fetchMovies = async () => {
+    const res = await searchApi({ query: keyword, page: currentPage });
+    const json = await res.json();
+    setItems(json.results);
+    setPages(json.total_pages);
+  } 
 
   return (
     <>
-      <MovieList data={movies}/>
+      <MovieList data={items}/>
       <Pagination 
-        page={page} 
+        page={currentPage} 
         pages={pages} 
         onClick={i => history.push(`${location.pathname}?page=${i}`)}
       />
@@ -25,12 +53,4 @@ const Movies = props => {
   );
 }
 
-const mapStateToProps = ({ search }, { page, keyword }) => {
-  if (search.page !== page || search.keyword !== keyword) {
-    return { movies: [], pages: 1, isFetching: search.isFetching }
-  }
-
-  return { movies: search.movies, pages: search.pages, isFetching: search.isFetching }
-}
-
-export default connect(mapStateToProps)(Movies);
+export default Movies;
