@@ -6,6 +6,7 @@ import Pagination from './Pagination';
 const Movies = ({ keyword, page, history, location }) => {
   const [ items, setItems ] = useState([]);
   const [ pages, setPages ] = useState(1);
+  const [ empty, setEmpty ] = useState(false);
   const [ currentKeyword, setCurrentKeyword ] = useState(keyword);
   const [ currentPage, setCurrentPage ] = useState(page);
   
@@ -23,13 +24,14 @@ const Movies = ({ keyword, page, history, location }) => {
     }
     
     if (clearItems) {
+      setEmpty(false);
       setItems([]);
     }
     
   }, [currentKeyword, keyword, currentPage, page]);
   
   useEffect(() => {
-    if (items.length === 0) {
+    if (items.length === 0 && !empty) {
       fetchMovies();
     }
   });
@@ -37,9 +39,18 @@ const Movies = ({ keyword, page, history, location }) => {
   const fetchMovies = async () => {
     const res = await searchApi({ query: keyword, page: currentPage });
     const json = await res.json();
+    setEmpty(json.results.length === 0);
     setItems(json.results);
     setPages(json.total_pages);
   } 
+  
+  if (empty) {
+    return (
+      <p className="mt-6">
+        No result found...
+      </p>
+    );
+  }
 
   return (
     <>
