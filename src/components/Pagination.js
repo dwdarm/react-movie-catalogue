@@ -31,8 +31,9 @@ const Pagination = ({page, pages, onClick}) => (
   <nav className="pagination is-centered" role="navigation">
 
     {page > 1 ? 
+      // eslint-disable-next-line
       <a 
-        className="pagination-previous" 
+        className="pagination-previous"
         onClick={() => onClick && onClick(page - 1)}>
         Previous
       </a> 
@@ -40,6 +41,7 @@ const Pagination = ({page, pages, onClick}) => (
     }
 
     {page < pages ? 
+      // eslint-disable-next-line
       <a 
         className="pagination-next"
         onClick={() => onClick && onClick(page + 1)}>
@@ -50,6 +52,7 @@ const Pagination = ({page, pages, onClick}) => (
     <ul className="pagination-list">
 
       <li>
+        { /* eslint-disable-next-line */ }
         <a 
           className="pagination-link"
           onClick={() => onClick && onClick(1)}>
@@ -59,6 +62,7 @@ const Pagination = ({page, pages, onClick}) => (
 
       {computePagination(page, pages).map(i => (
         <li key={i}>
+          { /* eslint-disable-next-line */ }
           <a 
             className={`pagination-link ${page === i ? 'is-current' : ''}`}
             onClick={() => onClick && onClick(i)}>
@@ -68,6 +72,7 @@ const Pagination = ({page, pages, onClick}) => (
       ))}
 
       <li>
+        { /* eslint-disable-next-line */ }
         <a 
           className="pagination-link"
           onClick={() => onClick && onClick(pages)}>

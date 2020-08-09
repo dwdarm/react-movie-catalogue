@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { getGenres } from '../store/actions/genres.action';
+import { selectGenres } from '../features/genres.slice';
 
-const NavBar = ({genres, path, active, onBurgerClick, onSearchInputChange, onSearchButtonClick}) => (
+const NavBar = ({
+  genres, 
+  path, 
+  active, 
+  onBurgerClick, 
+  onSearchInputChange, 
+  onSearchButtonClick}) => (
+  
   <nav className="navbar is-link">
     <div className="container">
 
@@ -15,7 +22,8 @@ const NavBar = ({genres, path, active, onBurgerClick, onSearchInputChange, onSea
           <span className="icon"><i className="fa fa-film"></i></span>
           <span>Movie</span>
         </Link>
-
+        
+        { /* eslint-disable-next-line */ }
         <a 
           role="button" 
           className={`navbar-burger burger ${active ? 'is-active' : ''}`}
@@ -75,6 +83,7 @@ const NavBar = ({genres, path, active, onBurgerClick, onSearchInputChange, onSea
           </Link>
 
           <div className="navbar-item has-dropdown is-hoverable">
+            { /* eslint-disable-next-line */ }
             <a className="navbar-link">
               <span className="icon"><i className="fa fa-dot-circle-o"></i></span>
               <span>Genre</span>
@@ -96,25 +105,20 @@ const NavBar = ({genres, path, active, onBurgerClick, onSearchInputChange, onSea
   </nav>
 );
 
-const NavBarContainer = ({genres, dispatch}) => {
+const NavBarContainer = () => {
+  const { genres } = useSelector(selectGenres);
   const history = useHistory();
   const location = useLocation();
   const [lastPath, setLastPath] = useState(location.pathname);
   const [active, setActive] = useState('');
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    if (genres.length === 0) {
-      dispatch(getGenres());
-    }
-  });
   
   useEffect(() => {
     if (location.pathname !== lastPath) {
       setLastPath(location.pathname);
       setActive(false)
     }
-  });
+  }, [location.pathname, lastPath]);
 
   return (
     <NavBar 
@@ -131,10 +135,4 @@ const NavBarContainer = ({genres, dispatch}) => {
     />)
 }
 
-const mapStateToProps = state => {
-  return {
-    genres: state.genres
-  }
-}
-
-export default connect(mapStateToProps)(NavBarContainer);
+export default NavBarContainer;

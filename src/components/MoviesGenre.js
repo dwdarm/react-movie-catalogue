@@ -1,38 +1,31 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchMovieListByGenre, selectMovieList } from '../features/movie-list.slice';
 import MovieList from './MovieList';
 import Pagination from './Pagination';
-import { fetchMoviesByGenre } from '../store/actions/movies.action';
 
-const Movies = props => {
-  const { movies, genre, genreId,page, pages, history, location, isFetching, dispatch } = props;
-
-  useEffect(() => { dispatch(fetchMoviesByGenre ({ genre, genreId, page })); });
-
-  //if (isFetching) {
-  //  return <p className="has-text-centered">Loading...</p>
-  //}
+const MovieListGenre = props => {
+  const { items, page, pages } = useSelector(selectMovieList(props.genre));
+  const dispatch = useDispatch();
+  
+  useEffect(() => { 
+    dispatch(fetchMovieListByGenre({
+      genre: props.genre, 
+      genreId: props.genreId, 
+      page: props.page
+    })); 
+  });
 
   return (
     <>
-      <MovieList data={movies}/>
+      <MovieList data={items}/>
       <Pagination 
         page={page} 
         pages={pages} 
-        onClick={i => history.push(`${location.pathname}?page=${i}`)}
+        onClick={i => props.history.push(`${props.location.pathname}?page=${i}`)}
       />
     </>
   );
 }
 
-const mapStateToProps = ({ movies }, { page, genre }) => {
-  const data = movies[genre] || { movies: [], page: 1, pages: 1, isFetching: false }
-  
-  if (data.page !== page) {
-    return { movies: [], pages: 1, isFetching: data.isFetching }
-  }
-
-  return { movies: data.movies, pages: data.pages, isFetching: data.isFetching }
-}
-
-export default connect(mapStateToProps)(Movies);
+export default MovieListGenre;
