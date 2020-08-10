@@ -24,4 +24,14 @@ const MovieList = ({data}) => {
   )
 };
 
-export default MovieList;
+const isPropsEqual = (prevProps, nextProps) => {
+  if (prevProps.data.length !== nextProps.data.length) {
+    return false;
+  }
+  
+  return true
+}
+
+const MemoizedMovieList = React.memo(MovieList, isPropsEqual);
+
+export default MemoizedMovieList;

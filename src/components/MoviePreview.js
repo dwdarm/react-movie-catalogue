@@ -1,5 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import RatingStars from './RatingStars';
 
 export default ({ movie }) => (
@@ -8,18 +9,18 @@ export default ({ movie }) => (
     style={{borderRadius: '5px'}}>
     
     <div className="card-image">
-      {
-        movie ?
-          <figure 
+      { movie 
+        ? <figure 
             className="image is-2by3 has-background-grey-lighter"
             style={{borderRadius: '5px'}}>
-            <img 
+            <LazyLoadImage
+              alt=""
+              src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
               className="has-ratio" 
               style={{width: '100%', borderRadius: '5px'}}
-              src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-              alt=""/>
-          </figure> :
-          <Skeleton height={200} />
+            />
+          </figure> 
+        : <Skeleton style={{paddingTop:'150%'}} />
       }
     </div>
     

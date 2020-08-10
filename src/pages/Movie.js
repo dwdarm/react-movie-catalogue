@@ -7,6 +7,7 @@ import { fetchMovieDetail, selectMovieDetail } from '../features/movie-detail.sl
 import Layout from '../components/Layout';
 import RatingStars from '../components/RatingStars';
 import MoviesSimiliar from '../components/MoviesSimiliar';
+import MovieCredits from '../components/MovieCredits';
 
 const Movie = props => {
   const { id } = useParams();
@@ -59,7 +60,7 @@ const Movie = props => {
                       style={{width:'300px', borderRadius:'5px', margin:'0 auto'}}
                       src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
                       alt=""/> :
-                    <Skeleton style={{margin:'0 auto'}} width={300} height={400} />
+                    <Skeleton style={{margin:'0 auto', paddingTop:'150%'}} width={300} />
                   }
               </figure> 
             </div>
@@ -116,6 +117,14 @@ const Movie = props => {
         </div>
       </div>
     </section>
+    
+    {movie ?
+      <div className="section">
+        <div className="container">
+          <MovieCredits id={id}/>
+        </div>
+      </div> : null
+    }
     
     {movie ?
       <div className="section">

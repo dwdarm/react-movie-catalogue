@@ -38,10 +38,12 @@ const Movies = ({ keyword, page, history, location }) => {
   
   const fetchMovies = async () => {
     const res = await searchApi({ query: keyword, page: currentPage });
-    const json = await res.json();
-    setEmpty(json.results.length === 0);
-    setItems(json.results);
-    setPages(json.total_pages);
+    if (res.status === 200) {
+      const json = await res.json();
+      setEmpty(json.results.length === 0);
+      setItems(json.results);
+      setPages(json.total_pages);
+    }
   } 
   
   if (empty) {

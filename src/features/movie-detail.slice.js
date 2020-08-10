@@ -8,6 +8,12 @@ const defaultItemState = {
     pages: 1, 
     isFetching: false, 
     hasMore: true
+  },
+  credits: {
+    cast: [],
+    crew: [],
+    isFetching: false, 
+    isFetched: false
   }
 } 
 
@@ -54,7 +60,39 @@ export const movieDetailSlice = createSlice({
           }
         }
       }
-    }
+    },
+    requestCredits: (state, action) => {
+      const item = state[action.payload.id]
+      if (!item) { return; }
+      
+      return {
+        ...state,
+        [action.payload.id]: {
+          ...item,
+          credits: {
+            ...item.credits,
+            isFetching: true,
+          }
+        }
+      }
+    },
+    receiveCredits: (state, action) => {
+      const item = state[action.payload.id]
+      if (!item) { return; }
+      
+      return {
+        ...state,
+        [action.payload.id]: {
+          ...item,
+          credits: {
+            cast: action.payload.cast,
+            crew: action.payload.crew,
+            isFetching: false,
+            isFetched: true,
+          }
+        }
+      }
+    },
   }
 });
 
@@ -68,12 +106,27 @@ function shouldFetchMovieDetail(state, id) {
 
 function shouldFetchMovieDetailSimiliar(state, id) {
   if (!state.movieDetail[id]) {
-    return true;
+    return false;
   }
   
   const item = state.movieDetail[id].similiar;
   if (item.items.length === 0 && !item.isFetching && item.hasMore) {
     return true;
+  }
+  
+  return false
+}
+
+function shouldFetchMovieDetailCredits(state, id) {
+  if (!state.movieDetail[id]) {
+    return false;
+  }
+  
+  const credits = state.movieDetail[id].credits;
+  if (credits.crew.length === 0 || credits.cast.length === 0) {
+    if (!credits.isFetching && !credits.isFetched) {
+      return true;
+    }
   }
   
   return false
@@ -113,6 +166,29 @@ export const fetchSimiliarMovies = (id, params = {}) => async (dispatch, getStat
       movies: json.results, 
       page: json.page, 
       pages: json.total_pages 
+    }));
+    return Promise.resolve();
+  }
+  
+  return Promise.reject();
+}
+
+export const fetchMovieDetailCredits = (id, params = {}) => async (dispatch, getState) => {
+  if (!shouldFetchMovieDetailCredits(getState(), id)) {
+    return Promise.resolve();
+  }
+  
+  const { receiveCredits, requestCredits } = movieDetailSlice.actions;
+  
+  dispatch(requestCredits({ id }));
+  
+  const res = await movieApi.credits(id);
+  if (res.status === 200) {
+    const json = await res.json();
+    dispatch(receiveCredits({ 
+      id, 
+      cast: json.cast,
+      crew: json.crew
     }));
     return Promise.resolve();
   }
