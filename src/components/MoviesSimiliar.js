@@ -16,7 +16,7 @@ const Movies = ({ id, history, location }) => {
     return null;
   }
 
-  return <MovieList data={items}/>
+  return <MovieList id={id} data={items}/>
 }
 
 export default Movies;
