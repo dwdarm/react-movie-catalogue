@@ -29,6 +29,10 @@ const isPropsEqual = (prevProps, nextProps) => {
     return false;
   }
   
+  if (prevProps.id !== nextProps.id) {
+    return false;
+  }
+  
   return true
 }
 
