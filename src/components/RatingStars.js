@@ -9,7 +9,7 @@ const range = (start, end) => {
   return result;
 }
 
-export default props => (
+const RatingStars = props => (
   <div className="columns is-mobile is-gapless">
     {range(0, 5).map(e => (
       <div key={e} className="column is-narrow">
@@ -20,3 +20,5 @@ export default props => (
     ))}
   </div>
 );
+
+export default RatingStars

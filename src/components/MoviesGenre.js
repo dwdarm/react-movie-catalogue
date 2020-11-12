@@ -18,7 +18,7 @@ const MovieListGenre = props => {
 
   return (
     <>
-      <MovieList data={items}/>
+      <MovieList data={items} id={props.genre} />
       <Pagination 
         page={page} 
         pages={pages} 

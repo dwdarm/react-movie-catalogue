@@ -4,7 +4,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Layout from '../components/Layout';
 import MoviesSearch from '../components/MoviesSearch';
 
-export default () => {
+const Search = () => {
   const history = useHistory();
   const location = useLocation();
   const { keyword } = useParams();
@@ -25,3 +25,5 @@ export default () => {
     </Layout>
   );
 }
+
+export default Search;

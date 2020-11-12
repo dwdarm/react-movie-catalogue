@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as Logo } from '../images//themoviedb-logo.svg';
 
-export default () => (
+const Footer = () => (
   <footer className="footer" style={{padding: '1.5rem'}}>
     <div className="container">
       <div className="level">
@@ -19,3 +19,5 @@ export default () => (
     </div>
   </footer>
 );
+
+export default Footer;

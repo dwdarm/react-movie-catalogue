@@ -106,7 +106,7 @@ const CrewList = ({ data }) => {
   );
 }
 
-export default ({ id }) => {
+const MovieCredits = ({ id }) => {
   const [ tab, setTab ] = useState('cast');
   const movie = useSelector(selectMovieDetail(id));
   const { cast, crew } = movie.credits;
@@ -140,3 +140,5 @@ export default ({ id }) => {
    </div>
   );
 }
+
+export default MovieCredits

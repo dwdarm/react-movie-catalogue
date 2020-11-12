@@ -16,7 +16,7 @@ const Loading = () => (
   </div>
 );
 
-export default ({ children }) => {
+const InitialProps = ({ children }) => {
   const { isFetching } = useSelector(selectGenres);
   const dispatch = useDispatch();
   const [ isFullfiled, setIsFullfiled ] = useState(false);
@@ -31,3 +31,5 @@ export default ({ children }) => {
   
   return <>{ children }</>
 }
+
+export default InitialProps;

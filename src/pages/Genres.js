@@ -4,7 +4,7 @@ import { useParams, useHistory, useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import MoviesGenre from '../components/MoviesGenre';
 
-export default () => {
+const Genres = () => {
   const history = useHistory();
   const params = useParams();
   const location = useLocation();
@@ -32,3 +32,5 @@ export default () => {
     </Layout>
   );
 }
+
+export default Genres;

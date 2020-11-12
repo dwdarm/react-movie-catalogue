@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import RatingStars from './RatingStars';
 
-export default ({ movie }) => (
+const MoviePreview = ({ movie }) => (
   <article 
     className="card movie-preview is-shadowless"
     style={{borderRadius: '5px'}}>
@@ -41,3 +41,5 @@ export default ({ movie }) => (
       
   </article>
 );
+
+export default MoviePreview;

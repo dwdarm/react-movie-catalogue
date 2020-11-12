@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Movies from '../components/MoviesSection';
 
-export default ({ title, section }) => {
+const Index = ({ title, section }) => {
   const history = useHistory();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -24,3 +24,5 @@ export default ({ title, section }) => {
     </Layout>
   );
 }
+
+export default Index;
